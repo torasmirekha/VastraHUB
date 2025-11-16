@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Prata&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+a.active hr{
+    display: block;
+}
+
+*{
+    font-family: Outfit;
+}
+
+.prata-regular {
+    font-family: "Prata", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  ::-webkit-scrollbar{
+    display: none;
+  }
+  
+  @media (max-width:640px) {
+    a.active{
+        background-color: black;
+        color: white;
+    }
+  }
+
+/* Animated underline for hero heading */
+@keyframes underlineSweep {
+  0% { width: 30%; background-position: 0% 50%; }
+  50% { width: 90%; background-position: 100% 50%; }
+  100% { width: 30%; background-position: 0% 50%; }
+}
+.animated-underline {
+  height: 5px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #b3005a, #ff6b6b, #ffd700, #f6ad55, #b3005a);
+  background-size: 300% 300%;
+  animation: underlineSweep 3s ease-in-out infinite;
+  box-shadow: 0 6px 18px rgba(179, 0, 90, 0.25), 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Gentle floating animation for saree hero image */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(0.5deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+.saree-float {
+  animation: float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Animated gradient brand text */
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+.brand-shimmer {
+  background: linear-gradient(90deg, #b3005a, #ff6b6b, #ffd36a, #f6ad55, #b3005a);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 3.5s linear infinite;
+  letter-spacing: 0.6px;
+  text-shadow: 0 4px 12px rgba(255, 105, 180, 0.35), 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.brand-gradient {
+  background: linear-gradient(90deg, #b3005a, #ff6b6b, #ffd36a, #f6ad55, #b3005a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Flowing saree wave accent */
+@keyframes waveFlow {
+  0% { background-position: 0 0; }
+  50% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+.saree-wave {
+  height: 8px;
+  border-radius: 9999px;
+  background: repeating-linear-gradient(90deg,
+    rgba(179,0,90,0.9) 0 14px,
+    rgba(255,107,107,0.7) 14px 28px,
+    rgba(255,211,106,0.7) 28px 42px,
+    rgba(246,173,85,0.7) 42px 56px
+  );
+  background-size: 320% 100%;
+  animation: waveFlow 6s ease-in-out infinite;
+  box-shadow: 0 6px 18px rgba(179, 0, 90, 0.25), 0 2px 8px rgba(0,0,0,0.2);
+}

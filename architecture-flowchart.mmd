@@ -1,0 +1,73 @@
+flowchart TD
+
+  subgraph Frontend[Frontend (Shop UI) - http://localhost:5173/]
+    U[User] -->|GET /api/product/list| PList
+    U -->|POST /api/cart/add| CAdd
+    U -->|POST /api/cart/update| CUpd
+    U -->|POST /api/order/place| OCOD
+    U -->|POST /api/order/stripe| OStripe
+    U -->|POST /api/order/razorpay| ORazor
+    U -->|GET /api/user/me| UMe
+    U -->|POST /api/user/update| UUpd
+    U -->|POST /api/order/userorders| UOrders
+  end
+
+  subgraph Admin[Admin Panel - http://localhost:5174/]
+    A[Admin] -->|POST /api/order/list| AOrders
+    A -->|POST /api/order/status| AStatus
+  end
+
+  subgraph Backend[Express API - http://localhost:4000/]
+    PList[[productController.listProducts]]
+    CAdd[[cartController.addToCart]]
+    CUpd[[cartController.updateCart]]
+    OCOD[[orderController.placeOrder]]
+    OStripe[[orderController.placeOrderStripe]]
+    ORazor[[orderController.placeOrderRazorpay]]
+    VerifyStripe[[orderController.verifyStripe]]
+    VerifyRazor[[orderController.verifyRazorpay]]
+    UMe[[userController.getMe]]
+    UUpd[[userController.updateMe]]
+    UOrders[[orderController.userOrders]]
+    AOrders[[orderController.allOrders]]
+    AStatus[[orderController.updateStatus]]
+  end
+
+  subgraph DB[MongoDB Collections]
+    DBUsers[(users)]
+    DBOrders[(orders)]
+    DBProducts[(products)]
+    DBSubscribers[(subscribers)]
+  end
+
+  %% Product & Cart
+  PList --> DBProducts
+  CAdd --> DBUsers
+  CUpd --> DBUsers
+
+  %% Orders & Payments
+  OCOD --> DBOrders
+  OStripe --> DBOrders
+  ORazor --> DBOrders
+  OStripe --> Stripe[Stripe Checkout]
+  Stripe --> VerifyStripe
+  ORazor --> Razorpay[Razorpay SDK]
+  Razorpay --> VerifyRazor
+  VerifyStripe --> DBOrders
+  VerifyStripe --> DBUsers
+  VerifyRazor --> DBOrders
+  VerifyRazor --> DBUsers
+  UOrders --> DBOrders
+
+  %% User Profile & Addresses
+  UMe --> DBUsers
+  UUpd --> DBUsers
+  UUpd --> Cloudinary[Cloudinary upload or local uploads]
+
+  %% Admin
+  AOrders --> DBOrders
+  AStatus --> DBOrders
+
+  %% Effects in Frontend UI
+  UOrders --> Timeline[Orders page timeline: Placed → Packing → Shipped → Out for delivery → Delivered]
+  UUpd --> SavedAddresses[Dashboard shows updated Saved Addresses]
